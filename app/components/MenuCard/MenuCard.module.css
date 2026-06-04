@@ -1,13 +1,11 @@
 .card {
+    position: relative;
     width: 100%;
-    text-align: left;
     background-color: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -16,13 +14,22 @@
     box-shadow: 0 6px 20px var(--shadow);
 }
 
-.card:active {
-    transform: translateY(0);
+.openArea {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 }
 
 .imageWrapper {
-    width: 100%;
-    aspect-ratio: 4 / 3;
+    flex-shrink: 0;
+    width: 110px;
+    align-self: stretch;
     overflow: hidden;
     background-color: var(--bg-elevated);
 }
@@ -39,11 +46,13 @@
 }
 
 .content {
-    padding: 14px 16px;
+    padding: 14px 16px 14px;
+    padding-right: 56px; /* место под степпер */
     display: flex;
     flex-direction: column;
     gap: 6px;
     flex: 1;
+    min-width: 0;
 }
 
 .name {
@@ -74,9 +83,21 @@
     text-decoration: line-through;
 }
 
+.stepperSlot {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+}
+
 @media (min-width: 768px) {
+    .imageWrapper {
+        width: 130px;
+    }
+
     .content {
         padding: 16px 18px;
+        padding-right: 60px;
     }
 
     .name {

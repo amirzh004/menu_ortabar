@@ -162,6 +162,12 @@
     text-decoration: line-through;
 }
 
+.cartRow {
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

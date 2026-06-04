@@ -5,6 +5,7 @@ import MenuSection from './components/MenuSection/MenuSection';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { menuData, companyInfo, seoConfig } from '@/data/menu';
+import CartButton from "@/app/components/CartButton/CartButton";
 
 export default function Home() {
     const visibleCategories = menuData.filter((cat) =>
@@ -74,6 +75,7 @@ export default function Home() {
             </main>
             <Footer />
             <ScrollToTop />
+            <CartButton />
         </>
     );
 }

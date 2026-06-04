@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { companyInfo, seoConfig } from '@/data/menu';
 import './globals.css';
+import {CartProvider} from "@/context/CartContext";
 
 export const viewport: Viewport = {
     width: 'device-width',
@@ -204,7 +205,9 @@ export default function RootLayout({
                 }}
             />
         </head>
-        <body>{children}</body>
+        <body>
+        <CartProvider>{children}</CartProvider>
+        </body>
         </html>
     );
 }

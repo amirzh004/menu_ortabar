@@ -1,6 +1,7 @@
 'use client';
 
 import { MenuItem } from '@/types/menu';
+import QuantityStepper from '../QuantityStepper/QuantityStepper';
 import styles from './MenuCard.module.css';
 
 interface MenuCardProps {
@@ -17,39 +18,46 @@ export default function MenuCard({ item, onClick }: MenuCardProps) {
         : `${item.price.toLocaleString('ru-RU')} тенге`;
 
     return (
-        <button
-            className={styles.card}
-            onClick={onClick}
-            aria-label={`${item.name}, ${ariaPrice}. Открыть подробности`}
-        >
-            {item.image && (
-                <div className={styles.imageWrapper}>
-                    <img
-                        src={item.image}
-                        alt={`${item.name} — ${item.description.slice(0, 80)}`}
-                        className={styles.image}
-                        loading="lazy"
-                    />
-                </div>
-            )}
-            <div className={styles.content}>
-                <h4 className={styles.name}>{item.name}</h4>
-
-                {hasDiscount ? (
-                    <div className={styles.priceWrapper}>
-                        <span className={styles.oldPrice}>
-                            {item.price.toLocaleString('ru-RU')} ₸
-                        </span>
-                        <span className={styles.price}>
-                            {item.discountPrice!.toLocaleString('ru-RU')} ₸
-                        </span>
+        <div className={styles.card}>
+            <button
+                type="button"
+                className={styles.openArea}
+                onClick={onClick}
+                aria-label={`${item.name}, ${ariaPrice}. Открыть подробности`}
+            >
+                {item.image && (
+                    <div className={styles.imageWrapper}>
+                        <img
+                            src={item.image}
+                            alt={`${item.name} — ${item.description.slice(0, 80)}`}
+                            className={styles.image}
+                            loading="lazy"
+                        />
                     </div>
-                ) : (
-                    <p className={styles.price}>
-                        {item.price.toLocaleString('ru-RU')} ₸
-                    </p>
                 )}
+                <div className={styles.content}>
+                    <h4 className={styles.name}>{item.name}</h4>
+
+                    {hasDiscount ? (
+                        <div className={styles.priceWrapper}>
+                            <span className={styles.oldPrice}>
+                                {item.price.toLocaleString('ru-RU')} ₸
+                            </span>
+                            <span className={styles.price}>
+                                {item.discountPrice!.toLocaleString('ru-RU')} ₸
+                            </span>
+                        </div>
+                    ) : (
+                        <p className={styles.price}>
+                            {item.price.toLocaleString('ru-RU')} ₸
+                        </p>
+                    )}
+                </div>
+            </button>
+
+            <div className={styles.stepperSlot}>
+                <QuantityStepper item={item} size="sm" />
             </div>
-        </button>
+        </div>
     );
 }

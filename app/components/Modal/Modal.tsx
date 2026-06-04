@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MenuItem } from '@/types/menu';
 import styles from './Modal.module.css';
+import QuantityStepper from "@/app/components/QuantityStepper/QuantityStepper";
 
 interface ModalProps {
     item: MenuItem;
@@ -147,6 +148,10 @@ export default function Modal({ item, onClose }: ModalProps) {
                                 {item.price.toLocaleString('ru-RU')} ₸
                             </span>
                         )}
+                    </div>
+
+                    <div className={styles.cartRow}>
+                        <QuantityStepper item={item} size="lg" />
                     </div>
                 </div>
             </div>
