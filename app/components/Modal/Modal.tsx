@@ -61,6 +61,15 @@ export default function Modal({ item, onClose }: ModalProps) {
 
     if (!mounted) return null;
 
+    const hasDiscount =
+        item.discountPrice != null && item.discountPrice < item.price;
+
+    const hasNutrition =
+        item.calories != null ||
+        item.proteins != null ||
+        item.fats != null ||
+        item.carbs != null;
+
     const modalContent = (
         <div className={styles.overlay} onClick={onClose}>
             <div
@@ -90,13 +99,54 @@ export default function Modal({ item, onClose }: ModalProps) {
                         <p className={styles.description}>{item.description}</p>
                     )}
 
+                    {hasNutrition && (
+                        <div className={styles.nutrition}>
+                            {item.calories != null && (
+                                <div className={styles.nutritionCard}>
+                                    <span className={styles.nutritionValue}>{item.calories}</span>
+                                    <span className={styles.nutritionLabel}>ккал</span>
+                                </div>
+                            )}
+                            {item.proteins != null && (
+                                <div className={styles.nutritionCard}>
+                                    <span className={styles.nutritionValue}>{item.proteins} г</span>
+                                    <span className={styles.nutritionLabel}>Белки</span>
+                                </div>
+                            )}
+                            {item.fats != null && (
+                                <div className={styles.nutritionCard}>
+                                    <span className={styles.nutritionValue}>{item.fats} г</span>
+                                    <span className={styles.nutritionLabel}>Жиры</span>
+                                </div>
+                            )}
+                            {item.carbs != null && (
+                                <div className={styles.nutritionCard}>
+                                    <span className={styles.nutritionValue}>{item.carbs} г</span>
+                                    <span className={styles.nutritionLabel}>Углеводы</span>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <div className={styles.footer}>
                         {item.weight && (
                             <span className={styles.weight}>{item.weight}</span>
                         )}
-                        <span className={styles.price}>
-              {item.price.toLocaleString('ru-RU')} ₸
-            </span>
+
+                        {hasDiscount ? (
+                            <div className={styles.priceWrapper}>
+                                <span className={styles.oldPrice}>
+                                    {item.price.toLocaleString('ru-RU')} ₸
+                                </span>
+                                <span className={styles.price}>
+                                    {item.discountPrice!.toLocaleString('ru-RU')} ₸
+                                </span>
+                            </div>
+                        ) : (
+                            <span className={styles.price}>
+                                {item.price.toLocaleString('ru-RU')} ₸
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

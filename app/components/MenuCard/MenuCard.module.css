@@ -60,6 +60,20 @@
     margin-top: auto;
 }
 
+.priceWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: auto;
+}
+
+.oldPrice {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
 @media (min-width: 768px) {
     .content {
         padding: 16px 18px;

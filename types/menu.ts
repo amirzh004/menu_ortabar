@@ -5,6 +5,11 @@ export interface MenuItem {
     price: number;
     weight: string;
     image?: string;
+    discountPrice?: number; // цена со скидкой
+    calories?: number;      // ккал
+    proteins?: number;      // белки, г
+    fats?: number;          // жиры, г
+    carbs?: number;         // углеводы, г
 }
 
 export interface SubCategory {

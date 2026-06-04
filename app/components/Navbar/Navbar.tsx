@@ -25,13 +25,11 @@ export default function Navbar() {
         visibleCategories[0]?.subcategories[0]?.id || ''
     );
 
-    // Состояние видимости верхнего ряда (категорий)
-    const [isCategoryRowHidden, setIsCategoryRowHidden] = useState(false);
-
     const navbarRef = useRef<HTMLElement>(null);
     const categoryRowRef = useRef<HTMLDivElement>(null);
     const subcategoryRowRef = useRef<HTMLDivElement>(null);
 
+    // Блокировка авто-определения во время программного скролла
     const isScrollingRef = useRef(false);
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -39,10 +37,12 @@ export default function Navbar() {
         (c) => c.id === activeCategory
     );
 
+    // Получаем актуальную высоту навбара для точного offset
     const getNavbarHeight = useCallback(() => {
         return navbarRef.current?.offsetHeight ?? 110;
     }, []);
 
+    // Программный скролл к элементу
     const scrollToElement = useCallback(
         (id: string) => {
             const el = document.getElementById(id);
@@ -56,6 +56,7 @@ export default function Navbar() {
 
             window.scrollTo({ top, behavior: 'smooth' });
 
+            // Разблокируем определение активной секции после завершения скролла
             scrollTimeoutRef.current = setTimeout(() => {
                 isScrollingRef.current = false;
             }, 1000);
@@ -63,84 +64,51 @@ export default function Navbar() {
         [getNavbarHeight]
     );
 
-    // Определение активной подкатегории + скрытие/показ верхнего ряда
-    // Скролл-обработчик: и скрытие категорий, и активная подкатегория
+    // Определение активной подкатегории при скролле страницы
     useEffect(() => {
-        let lastScrollY = window.scrollY;
-        let ticking = false;
+        const handleScroll = () => {
+            if (isScrollingRef.current) return;
 
-        const update = () => {
-            const currentScrollY = window.scrollY;
-            const diff = currentScrollY - lastScrollY;
+            const navHeight = getNavbarHeight();
+            const triggerPoint = navHeight + 50;
 
-            // 1) Скрытие/показ верхнего ряда категорий
-            if (!isScrollingRef.current) {
-                if (currentScrollY < 150) {
-                    // У верха страницы — всегда показываем
-                    setIsCategoryRowHidden(false);
-                } else if (diff > 4) {
-                    // Скролл вниз — прячем
-                    setIsCategoryRowHidden(true);
-                } else if (diff < -4) {
-                    // Скролл вверх — показываем
-                    setIsCategoryRowHidden(false);
+            // Собираем все блоки подкатегорий
+            const subBlocks = Array.from(
+                document.querySelectorAll<HTMLElement>('[data-subcategory-id]')
+            );
+
+            if (subBlocks.length === 0) return;
+
+            let currentSubId = subBlocks[0].dataset.subcategoryId!;
+            let currentCatId = subBlocks[0].dataset.parentCategory!;
+
+            for (const block of subBlocks) {
+                const rect = block.getBoundingClientRect();
+                // Если верхняя граница блока выше точки триггера — он считается активным
+                if (rect.top <= triggerPoint) {
+                    currentSubId = block.dataset.subcategoryId!;
+                    currentCatId = block.dataset.parentCategory!;
+                } else {
+                    break;
                 }
             }
 
-            // 2) Определение активной подкатегории
-            if (!isScrollingRef.current) {
-                const navHeight = getNavbarHeight();
-                const triggerPoint = navHeight + 50;
-
-                const subBlocks = Array.from(
-                    document.querySelectorAll<HTMLElement>('[data-subcategory-id]')
-                );
-
-                if (subBlocks.length > 0) {
-                    let currentSubId = subBlocks[0].dataset.subcategoryId!;
-                    let currentCatId = subBlocks[0].dataset.parentCategory!;
-
-                    for (const block of subBlocks) {
-                        const rect = block.getBoundingClientRect();
-                        if (rect.top <= triggerPoint) {
-                            currentSubId = block.dataset.subcategoryId!;
-                            currentCatId = block.dataset.parentCategory!;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    setActiveSubcategory((prev) =>
-                        prev !== currentSubId ? currentSubId : prev
-                    );
-                    setActiveCategory((prev) =>
-                        prev !== currentCatId ? currentCatId : prev
-                    );
-                }
-            }
-
-            lastScrollY = currentScrollY;
-            ticking = false;
-        };
-
-        const onScroll = () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(update);
+            setActiveSubcategory((prev) => (prev !== currentSubId ? currentSubId : prev));
+            setActiveCategory((prev) => (prev !== currentCatId ? currentCatId : prev));
         };
 
         // Запускаем один раз при монтировании
-        update();
+        handleScroll();
 
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll, { passive: true });
-
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
         return () => {
-            window.removeEventListener('scroll', onScroll);
-            window.removeEventListener('resize', onScroll);
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
         };
     }, [getNavbarHeight]);
 
+    // Прокрутка активной кнопки категории в видимую область навбара
     useEffect(() => {
         const btn = categoryRowRef.current?.querySelector<HTMLElement>(
             `[data-id="${activeCategory}"]`
@@ -176,12 +144,7 @@ export default function Navbar() {
 
     return (
         <nav className={styles.navbar} ref={navbarRef}>
-            <div
-                className={`${styles.row} ${styles.categoryRow} ${
-                    isCategoryRowHidden ? styles.hidden : ''
-                }`}
-                ref={categoryRowRef}
-            >
+            <div className={styles.row} ref={categoryRowRef}>
                 {visibleCategories.map((category) => (
                     <button
                         key={category.id}

@@ -568,6 +568,11 @@ export const menuData: MenuCategory[] = [
                         description: 'Натуральный мёд к чаю',
                         price: 690,
                         weight: '50 г',
+                        image: '/background.webp',
+                        calories: 540,
+                        proteins: 28,
+                        fats: 32,
+                        carbs: 38,
                     },
                     {
                         id: 'bar-tea-lemon',
