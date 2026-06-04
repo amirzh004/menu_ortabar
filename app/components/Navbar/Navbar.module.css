@@ -2,9 +2,9 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background-color: rgba(21, 21, 21, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background-color: rgba(20, 16, 14, 0.78);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
     border-bottom: 1px solid var(--border);
 }
 
@@ -28,31 +28,56 @@
     padding-bottom: 10px;
 }
 
+/* Анимация схлопывания верхнего ряда категорий */
+.categoryRow {
+    max-height: 80px;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+            max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.25s ease,
+            padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.categoryRow.hidden {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+}
+
 .button {
     flex-shrink: 0;
     border-radius: 20px;
     white-space: nowrap;
     font-weight: 500;
     transition: all 0.2s ease;
-    border: 2px solid var(--border);
+    border: 1px solid var(--border);
 }
 
 .category {
     padding: 8px 18px;
     font-size: 14px;
     color: var(--text-secondary);
-    background-color: var(--bg-card);
+    background-color: rgba(34, 29, 26, 0.7);
 }
 
 .category:hover {
     color: var(--text-primary);
     border-color: var(--border-hover);
+    background-color: rgba(44, 38, 34, 0.85);
 }
 
 .category.active {
-    color: var(--bg-primary);
+    color: #1a1310;
     background-color: var(--accent);
     border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(212, 145, 90, 0.35);
 }
 
 .subcategory {
@@ -71,19 +96,23 @@
 .subcategory.activeSub {
     color: var(--accent);
     border-color: var(--accent);
-    background-color: rgba(201, 169, 97, 0.08);
+    background-color: var(--accent-soft);
 }
 
 @media (min-width: 768px) {
     .row {
         padding: 12px 24px;
-        justify-content: start;
+        justify-content: center;
         flex-wrap: wrap;
     }
 
     .row + .row {
         padding-top: 0;
         padding-bottom: 12px;
+    }
+
+    .categoryRow {
+        max-height: 100px;
     }
 
     .category {
