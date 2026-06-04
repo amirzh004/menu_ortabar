@@ -151,7 +151,7 @@ export default function Modal({ item, onClose }: ModalProps) {
                     </div>
 
                     <div className={styles.cartRow}>
-                        <QuantityStepper item={item} size="lg" />
+                        <QuantityStepper item={item} size="block" />
                     </div>
                 </div>
             </div>

@@ -165,7 +165,6 @@
 .cartRow {
     display: flex;
     justify-content: center;
-    padding-top: 4px;
 }
 
 @keyframes fadeIn {

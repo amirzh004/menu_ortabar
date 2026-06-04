@@ -133,13 +133,26 @@
     border-top: 1px solid var(--border);
 }
 
+.sumRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
 .totalRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 4px;
     margin-bottom: 16px;
-    color: var(--text-secondary);
-    font-size: 15px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .total {

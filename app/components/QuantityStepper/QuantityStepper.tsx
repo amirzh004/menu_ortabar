@@ -1,17 +1,18 @@
 'use client';
 
 import { MenuItem } from '@/types/menu';
-import { useCart} from "@/context/CartContext";
+import { useCart } from '@/context/CartContext';
 import styles from './QuantityStepper.module.css';
 
 interface Props {
     item: MenuItem;
-    size?: 'sm' | 'lg';
+    size?: 'sm' | 'lg' | 'block';
 }
 
 export default function QuantityStepper({ item, size = 'sm' }: Props) {
     const { getQty, addItem, increment, decrement } = useCart();
     const qty = getQty(item.id);
+    const isBlock = size === 'block';
 
     const stop = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -29,7 +30,7 @@ export default function QuantityStepper({ item, size = 'sm' }: Props) {
                 }}
                 aria-label={`Добавить ${item.name} в корзину`}
             >
-                +
+                {isBlock ? '+ Добавить к заказу' : '+'}
             </button>
         );
     }

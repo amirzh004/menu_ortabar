@@ -11,6 +11,7 @@ export const companyInfo = {
         twogis: 'https://2gis.kz/astana/geo/70000001087741298',
     },
     serviceCharge: '+10% обслуживание',
+    serviceChargePercent: 10,
 };
 
 export const seoConfig = {
