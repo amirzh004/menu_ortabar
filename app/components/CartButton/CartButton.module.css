@@ -2,19 +2,18 @@
     position: fixed;
     bottom: 24px;
     right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    height: 52px;
+    padding: 0 20px;
+    border-radius: 999px;
     background-color: var(--accent);
     color: var(--bg-primary);
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
     z-index: 1000;
     border: none;
     cursor: pointer;
-    padding: 0;
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
@@ -23,13 +22,19 @@
 }
 
 .button:active {
-    transform: scale(0.94);
+    transform: scale(0.96);
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
 }
 
 .badge {
     position: absolute;
-    top: -4px;
-    right: -4px;
+    top: -6px;
+    right: -6px;
     min-width: 22px;
     height: 22px;
     padding: 0 6px;
@@ -48,7 +53,7 @@
     .button {
         bottom: 32px;
         right: 32px;
-        width: 60px;
-        height: 60px;
+        height: 56px;
+        padding: 0 24px;
     }
 }

@@ -7,6 +7,29 @@ import {companyInfo} from '@/data/menu';
 import WaiterModal from '../WaiterModal/WaiterModal';
 import styles from './CartDrawer.module.css';
 
+const CloseIcon = () => (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+         strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+        <line x1="6" y1="6" x2="18" y2="18" />
+        <line x1="18" y1="6" x2="6" y2="18" />
+    </svg>
+);
+
+const PlusIcon = () => (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+         strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+);
+
+const MinusIcon = () => (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+         strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+);
+
 const WHATSAPP_PHONE = '77055252350';
 const SERVICE_PERCENT = companyInfo.serviceChargePercent; // 10
 
@@ -21,11 +44,13 @@ export default function CartDrawer({onClose}: { onClose: () => void }) {
             if (e.key === 'Escape') onClose();
         };
         document.addEventListener('keydown', handleEsc);
-        const prev = document.body.style.overflow;
+
+        const prevOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+
         return () => {
             document.removeEventListener('keydown', handleEsc);
-            document.body.style.overflow = prev;
+            document.body.style.overflow = prevOverflow; // вернётся ровно прежнее (обычно '')
         };
     }, [onClose]);
 
@@ -66,7 +91,7 @@ export default function CartDrawer({onClose}: { onClose: () => void }) {
                         onClick={onClose}
                         aria-label="Закрыть"
                     >
-                        ×
+                        <CloseIcon />
                     </button>
                 </div>
 
@@ -91,21 +116,23 @@ export default function CartDrawer({onClose}: { onClose: () => void }) {
                                         </span>
                                     </div>
                                     <div className={styles.lineStepper}>
-                                        <button
-                                            className={styles.stepBtn}
-                                            onClick={() => decrement(l.item.id)}
-                                            aria-label="Уменьшить"
-                                        >
-                                            −
-                                        </button>
-                                        <span className={styles.qty}>{l.qty}</span>
-                                        <button
-                                            className={styles.stepBtn}
-                                            onClick={() => increment(l.item.id)}
-                                            aria-label="Увеличить"
-                                        >
-                                            +
-                                        </button>
+                                        <div className={styles.lineStepper}>
+                                            <button
+                                                className={styles.stepBtn}
+                                                onClick={() => decrement(l.item.id)}
+                                                aria-label="Уменьшить"
+                                            >
+                                                <MinusIcon />
+                                            </button>
+                                            <span className={styles.qty}>{l.qty}</span>
+                                            <button
+                                                className={styles.stepBtn}
+                                                onClick={() => increment(l.item.id)}
+                                                aria-label="Увеличить"
+                                            >
+                                                <PlusIcon />
+                                            </button>
+                                        </div>
                                     </div>
                                 </li>
                             ))}
